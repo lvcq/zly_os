@@ -1,4 +1,4 @@
-pub mod double_fault;
+pub mod cpu_interrupts;
 pub mod pics;
 
 use lazy_static::lazy_static;
@@ -14,9 +14,11 @@ lazy_static! {
         idt.breakpoint.set_handler_fn(breakpoint_handler);
         unsafe {
             idt.double_fault
-                .set_handler_fn(double_fault::double_fault_handler)
+                .set_handler_fn(cpu_interrupts::double_fault::double_fault_handler)
                 .set_stack_index(gdt::DOUBLE_FAULT_IST_INDEX);
         }
+        idt.page_fault
+            .set_handler_fn(cpu_interrupts::page_fault::page_fault_handler);
         idt[InterruptIndex::Timer.as_usize()].set_handler_fn(timer_interrupt_handler);
         idt[InterruptIndex::Keyboard.as_usize()].set_handler_fn(keyword_interrupt_handler);
         idt
