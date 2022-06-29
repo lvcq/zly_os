@@ -6,7 +6,7 @@ use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 
 use crate::gdt;
 use crate::println;
-pub use pics::{timer_interrupt_handler, InterruptIndex, PICS};
+pub use pics::{keyword_interrupt_handler, timer_interrupt_handler, InterruptIndex, PICS};
 
 lazy_static! {
     static ref IDT: InterruptDescriptorTable = {
@@ -17,8 +17,8 @@ lazy_static! {
                 .set_handler_fn(double_fault::double_fault_handler)
                 .set_stack_index(gdt::DOUBLE_FAULT_IST_INDEX);
         }
-        idt[InterruptIndex::Timer.as_usize()]
-            .set_handler_fn(timer_interrupt_handler);
+        idt[InterruptIndex::Timer.as_usize()].set_handler_fn(timer_interrupt_handler);
+        idt[InterruptIndex::Keyboard.as_usize()].set_handler_fn(keyword_interrupt_handler);
         idt
     };
 }

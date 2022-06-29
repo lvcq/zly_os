@@ -1,11 +1,13 @@
 pub mod pics_interrupt_index;
 pub mod timer_interrupt;
+pub mod keyword_interrupt;
 
 use pic8259::ChainedPics;
 use spin;
 
 pub use pics_interrupt_index::InterruptIndex;
 pub use timer_interrupt::timer_interrupt_handler;
+pub use keyword_interrupt::keyword_interrupt_handler;
 
 pub const PIC_1_OFFSET: u8 = 32;
 pub const PIC_2_OFFSET: u8 = PIC_1_OFFSET + 8;
